@@ -20,3 +20,21 @@
   });
 </script>
 ```
+
+## Shopify swatch change event
+```
+document.addEventListener('DOMContentLoaded', function (){
+  $('.swatch :radio').change(function() {
+    var optionIndex = parseInt(jQuery(this).closest('.swatch').attr('data-option-index')) + 1;
+    var optionValue = $(this).val();
+    jQuery(this)
+    .closest('form')
+    .find('#Option'+optionIndex) 
+    .val(optionValue)
+    .trigger('change');
+    var currencySelector = document.getElementById('Option'+optionIndex);
+    currencySelector.value = optionValue;
+    currencySelector.dispatchEvent(new Event("change"));
+  });
+}, false);
+```
