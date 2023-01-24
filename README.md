@@ -1,4 +1,4 @@
-# shopify-ajax-addtocart
+# shopify-ajax-addtocart and add fee price on checkout step
 
 ## Shopify Ajax add to cart with selling_plan
 ```
