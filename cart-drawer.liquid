@@ -1,0 +1,604 @@
+<style>
+  .emptyCart {
+    display: none;
+  }
+  .isEmpty .emptyCart {
+    display: block;
+  }
+  .isEmpty .cartPriceBlock {
+    display: none;
+  }
+  .cartPriceBlock {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  .closeSidebtn {
+    position: absolute;
+    top: 11px;
+    right: 9px;
+    display: inline-block !important;
+    background-color: transparent !important;
+    border: none !important;
+    padding: 0 !important;
+    width: auto;
+  }
+  .closeSidebtn svg {
+    width: 21px !important;
+    height: 21px !important;
+  }
+  .ctmCartSideBar {
+    background-color: #fff;
+    width: 100%;
+    max-width: 500px;
+    height: 100%;
+    position: fixed;
+    bottom: 0;
+    right: -100%;
+    z-index: 9999999999;
+    box-shadow: 0 0 20px 0 #00000029;
+    box-sizing: border-box;
+    padding: 35px;
+    display: flex;
+    flex-wrap: wrap;
+    align-content: space-between;
+    -webkit-transition: all 0.3s ease-in-out;
+    -moz-transition: all 0.3s ease-in-out;
+    -ms-transition: all 0.3s ease-in-out;
+    -o-transition: all 0.3s ease-in-out;
+    transition: all 0.3s ease-in-out;
+  }
+  .isActive .ctmCartSideBar {
+    right: 0;
+    -webkit-transition: all 0.3s ease-in-out;
+    -moz-transition: all 0.3s ease-in-out;
+    -ms-transition: all 0.3s ease-in-out;
+    -o-transition: all 0.3s ease-in-out;
+    transition: all 0.3s ease-in-out;
+  }
+  .cartItemsBox {
+    width: 100%;
+    max-height: 487px;
+    overflow-y: auto;
+  }
+  .cartItemsBox::-webkit-scrollbar {
+    width: 5px;
+  }
+  .cartItemsBox::-webkit-scrollbar-track {
+    background: #f1f1f1;
+  }
+  .cartItemsBox::-webkit-scrollbar-thumb {
+    background: #AAAAAA;
+  }
+  .cartItemsBox::-webkit-scrollbar-thumb:hover {
+    background: #555;
+  }
+  .cartCheckoutBtn {
+    width: 100%;
+  }
+  .cartItemsBox ul {
+    list-style: none !important;
+    padding: 0 5px 0 0;
+    margin: 0;
+  }
+  .cartItemsBox ul li {
+    list-style: none !important;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 0;
+    border-bottom: 1px solid #AAAAAA;
+  }
+  .cartItemsBox ul li:nth-last-child(1) {
+    padding-bottom: 0 !important;
+    border-bottom: none !important;
+  }
+  .productImgBlock {
+    width: 100px;
+    height: 100px;
+    border-radius: 8px;
+    border: 1px solid #AAAAAA;
+    overflow: hidden;
+    margin-right: 24px;
+  }
+  .productImgBlock img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .productNameTxt a {
+    font-size: 18px;
+    color: #000;
+    margin-bottom: 4px;
+    font-weight: 700;
+    line-height: normal;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .productNameTxt p {
+    font-size: 18px;
+    color: #363636;
+    margin-bottom: 4px;
+    font-weight: 700;
+    line-height: normal;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .productNameTxt p.cartPrice {
+    font-size: 15px;
+    color: #AAAAAA;
+    margin-bottom: 6px;
+    font-weight: 400;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .productTitle {
+    width: 300px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .productDelIcon button {
+    border: none;
+    background-color: transparent;
+    padding: 0;
+    margin: 0;
+    display: inline-block;
+  }
+  .productDelIcon button svg {
+    width: 15px;
+    height: 13px;
+    fill: #f00;
+  }
+  .cartCheckoutBtn {
+    padding-top: 20px;
+    border-top: 1px solid #AAAAAA;
+    padding-right: 5px;
+  }
+  .cartCheckoutBtn button {
+    padding: 10px 30px;
+    display: block;
+    width: 100%;
+    font-size: 16px;
+    border-radius: 0;
+    border: none !important;
+    margin-top: 15px;
+    color: #fff;
+    background: #363636;
+    border-color: #363636;
+    letter-spacing: 1px;
+    border-radius: 3px;
+    -webkit-transition: all 0.3s ease-in-out;
+    -moz-transition: all 0.3s ease-in-out;
+    -ms-transition: all 0.3s ease-in-out;
+    -o-transition: all 0.3s ease-in-out;
+    transition: all 0.3s ease-in-out;
+  }
+  .cartCheckoutBtn button:hover {
+    background: #282828;
+    border-color: #282828;
+    -webkit-transition: all 0.3s ease-in-out;
+    -moz-transition: all 0.3s ease-in-out;
+    -ms-transition: all 0.3s ease-in-out;
+    -o-transition: all 0.3s ease-in-out;
+    transition: all 0.3s ease-in-out;
+  }
+  .totalPriceTxt {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .totalPriceTxt p {
+    font-size: 18px;
+    color: #AAAAAA;
+    margin-bottom: 0;
+    font-weight: 500;
+  }
+  .totalPriceTxt h5 {
+    font-size: 20px;
+    color: #000;
+    margin-bottom: 0;
+    font-weight: 700;
+  }
+  .counterBox {
+    display: flex;
+    align-items: center;
+  }
+  .counterBox button {
+    background-color: #f7f7f7;
+    width: 35px;
+    height: 35px;
+    text-align: center;
+    border: none;
+    padding: 0;
+    line-height: normal;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0;
+  }
+  .counterBox button svg {
+    width: 15px;
+    height: 15px;
+  }
+  .counterBox input {
+    width: 40px !important;
+    border-radius: 0;
+    text-align: center;
+    margin-bottom: 0 !important;
+    border: 1px solid #f7f7f7;
+    padding: 0;
+    height: 44px !important;
+  }
+  .cartPriceBlock .gift-message,
+  .cartPriceBlock .internal-message {
+    margin: 0 !important;
+    width: 100%;
+  }
+  .cartPriceBlock .row {
+    display: flex;
+    margin: 0 -15px;
+  }
+  .cartPriceBlock .row .col-md-6 {
+    width: 50%;
+    padding: 0 15px;
+  }
+  .cartPriceBlock .cart-attribute__field.gift-option {
+    display: flex;
+    align-items: center;
+    margin-bottom: 0;
+  }
+  .cartPriceBlock .cart-attribute__field.gift-option label {
+    padding-bottom: 0;
+  }
+  .cart-container {
+    display: none !important;
+  }
+  .top-bar--right-menu {
+    padding-right: 20px !important;
+  }
+  .top-bar--right-menu .cart-container {
+    display: block !important;
+  }
+
+  .counterBox .product-quantity-box.purchase-details__quantity {
+    width: 100% !important;
+  }
+
+  .counterBox .product-quantity-box .product-minus {
+    border-right: 0;
+    line-height: 44px;
+    font-size: 15px !important;
+    border: none !important;
+  }
+  .counterBox .product-quantity-box .product-plus {
+    border-right: 0;
+    line-height: 44px;
+    font-size: 15px !important;
+    border: none !important;
+  }
+  .counterBox #quantity {
+    border: 1px solid #f7f7f7 !important;
+  }
+  .productDelIcon button svg {
+    width: 23px !important;
+    height: 23px !important;
+  }
+  .ctmCartbtn button svg {
+    width: 30px;
+    height: 30px;
+  }
+  .ctmCartbtn button {
+    padding: 0;
+    width: auto;
+    background-color: transparent;
+    border: none;
+  }
+  .ctmCartbtn button:hover {
+    background-color: transparent !important;
+  }
+  .ctmCartbtn {
+    justify-content: flex-end !important;
+  }
+  .isEmpty .columns.emptyCart {
+    width: 100%;
+  }
+  .isEmpty #CartDrawer-Form {
+    width: 100%;
+  }
+  .isEmpty .cartItemsBox {
+    display: none !important;
+  }
+  .isEmpty .cartCheckoutBtn {
+    display: none !important;
+  }
+  @media(max-width: 1024px) {
+    .cartItemsBox {
+      max-height: 907px;
+      min-height: 907px;
+    }
+  }
+  @media(max-width: 991px) {
+    .cartItemsBox {
+      max-height: 547px;
+      min-height: 547px;
+    }
+  }
+  @media(max-width: 767px) {
+    .cart-container {
+      display: block !important;
+    }
+    .top-bar--right-menu {
+      padding-right: 0 !important;
+    }
+    .top-bar--right-menu .cart-container {
+      display: none !important;
+    }
+    .ctmCartSideBar {
+      padding: 35px 15px;
+    }
+    .productTitle {
+      width: 250px;
+    }
+    .productImgBlock {
+      width: 80px;
+      height: 80px;
+    }
+    .cartPriceBlock .gift-message label,
+    .cartPriceBlock .internal-message label {
+      font-size: 11px;
+    }
+    .cartItemsBox {
+      max-height: 327px;
+      min-height: 327px;
+    }
+    .ctmCartbtn.purchase-details__buttons {
+      margin-top: 5px;
+      margin-left: 0;
+      flex: auto;
+    }
+    .productNameTxt a {
+      font-size: 14px;
+    }
+  }
+  @media(max-width: 320px) {
+    .productImgBlock {
+      width: 70px;
+      height: 70px;
+    }
+    .productTitle {
+      width: 200px;
+    }
+    .productNameTxt a {
+      font-size: 13px;
+    }
+    .productNameTxt p.cartPrice {
+      font-size: 12px;
+    }
+    .counterBox button {
+      width: 30px;
+      height: 30px;
+    }
+    .counterBox input {
+      height: 28px !important;
+    }
+  }
+</style>
+
+<script>
+  window.routes = {
+    cart_add_url: '{{ routes.cart_add_url }}',
+    cart_change_url: '{{ routes.cart_change_url }}',
+    cart_update_url: '{{ routes.cart_update_url }}',
+    cart_url: '{{ routes.cart_url }}',
+    predictive_search_url: '{{ routes.predictive_search_url }}'
+  };
+</script>
+<cart-drawer {% if cart == empty %}class=" isEmpty"{% endif %}>
+  <div class="ctmCartSideBar" data-drawer-target>
+    <form action="{{ routes.cart_url }}" method="post" id="CartDrawer-Form">
+      <div class="sixteen columns emptyCart">
+        <div class="section clearfix">
+          <p class="quote">{{ 'cart.general.continue_browsing_html' | t }}</p>
+          <br class="clear"/>
+          <br class="clear"/>
+        </div>
+      </div>
+      <div class="cartPriceBlock">
+        {%- assign rec_product = '' %}
+        <div class="cartItemsBox">
+          <ul>
+            {% for item in cart.items %}
+              {% assign collection_diff = item.product.collections.size | minus: 0 %}
+              {% assign randomNumberCollection = "now" | date: "%N" | modulo: collection_diff | plus: 0 %}
+
+              {% assign diff = item.product.collections[randomNumberCollection].products.size | minus: 0 %}
+              {% assign randomNumber = "now" | date: "%N" | modulo: diff | plus: 0 %}
+              {% assign sample_product = item.product.collections[randomNumberCollection].products[randomNumber] %}
+              {% assign rec_product = sample_product %}
+
+              <li data-cart-item-index="{{ item.index | plus: 1 }}">
+                <div class="productImgBlock">
+                  <img src="{{ item | img_url: '180x', scale: 2 }}" alt="{{ item.title | escape }}">
+                </div>
+                <div class="productTitle">
+                  <div class="productNameTxt">
+                    <a href="{{ item.url }}">
+                      {{ item.product.title }}
+                    </a>
+                    {% if item.properties %}
+                        <p>
+                          {% for p in item.properties %}
+                            {% unless p.last == blank %}
+                              {% if p.last contains '/uploads/' %}
+                                <div>
+                                  {{ p.first }}: <a class="lightbox" href="{{ p.last }}">{{ 'cart.general.uploaded_file' | t }}</a>
+                                </div>
+                              {% else %}
+    
+                              <div>
+                                {{ p.first }}: {{ p.last }}
+                              </div>
+                            {% endif %}
+                          {% endunless %}
+                        {% endfor %}
+                      </p>
+                    {% endif %}
+                    <p class="cartPrice">{{ item.line_price | money }}</p>
+                    <div class="counterBox">
+                      <minus-button data-index="{{ item.index | plus: 1 }}" data-key="{{ item.key }}" data-qty-value="{{ item.quantity | minus: 1 }}">
+                        <button type="button">
+                          <svg fill="none" stroke-width="1.5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M6 12H18" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                        </button>
+                      </minus-button>
+                      <input type="phone" readonly name="updates[]" value="{{ item.quantity }}">
+                      <plus-button data-key="{{ item.key }}" data-index="{{ item.index | plus: 1 }}" data-qty-value="{{ item.quantity | plus: 1 }}">
+                        <button type="button">
+                          <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+                            <defs>
+                              <style>
+                                .cls-10 {
+                                  fill: none;
+                                  stroke: #000;
+                                  stroke-linecap: round;
+                                  stroke-linejoin: round;
+                                  stroke-width: 2px;
+                                }
+                              </style>
+                            </defs><title/><g id="plus"><line class="cls-10" x1="16" x2="16" y1="7" y2="25"/><line class="cls-10" x1="7" x2="25" y1="16" y2="16"/></g>
+                          </svg>
+                        </button>
+                      </plus-button>
+                    </div>
+                    <p data-error-key="{{ item.key }}"></p>
+                  </div>
+                  <div class="productDelIcon">
+                    {%- comment -%}
+                      <a href="/cart/change?line={{ forloop.index }}&amp;quantity=0" title="{{ 'cart.general.remove' | t }}">
+                      <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" fill="#f00">
+                      <title/><g data-name="Layer 17" id="Layer_17"><path class="cls-1" d="M24,31H8a3,3,0,0,1-3-3V9A1,1,0,0,1,7,9V28a1,1,0,0,0,1,1H24a1,1,0,0,0,1-1V9a1,1,0,0,1,2,0V28A3,3,0,0,1,24,31Z"/><path class="cls-1" d="M28,7H4A1,1,0,0,1,4,5H28a1,1,0,0,1,0,2Z"/><path class="cls-1" d="M20,7a1,1,0,0,1-1-1V3H13V6a1,1,0,0,1-2,0V2a1,1,0,0,1,1-1h8a1,1,0,0,1,1,1V6A1,1,0,0,1,20,7Z"/><path class="cls-1" d="M16,26a1,1,0,0,1-1-1V11a1,1,0,0,1,2,0V25A1,1,0,0,1,16,26Z"/><path class="cls-1" d="M21,24a1,1,0,0,1-1-1V13a1,1,0,0,1,2,0V23A1,1,0,0,1,21,24Z"/><path class="cls-1" d="M11,24a1,1,0,0,1-1-1V13a1,1,0,0,1,2,0V23A1,1,0,0,1,11,24Z"/></g>
+                      </svg>
+                      </a>
+                    {%- endcomment -%}
+                    <remove-cart-button data-key="{{ item.key }}" data-index="{{ item.index | plus: 1  }}">
+                      <button>
+                        <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" fill="#f00">
+                          <title/><g data-name="Layer 17" id="Layer_17"><path class="cls-1" d="M24,31H8a3,3,0,0,1-3-3V9A1,1,0,0,1,7,9V28a1,1,0,0,0,1,1H24a1,1,0,0,0,1-1V9a1,1,0,0,1,2,0V28A3,3,0,0,1,24,31Z"/><path class="cls-1" d="M28,7H4A1,1,0,0,1,4,5H28a1,1,0,0,1,0,2Z"/><path class="cls-1" d="M20,7a1,1,0,0,1-1-1V3H13V6a1,1,0,0,1-2,0V2a1,1,0,0,1,1-1h8a1,1,0,0,1,1,1V6A1,1,0,0,1,20,7Z"/><path class="cls-1" d="M16,26a1,1,0,0,1-1-1V11a1,1,0,0,1,2,0V25A1,1,0,0,1,16,26Z"/><path class="cls-1" d="M21,24a1,1,0,0,1-1-1V13a1,1,0,0,1,2,0V23A1,1,0,0,1,21,24Z"/><path class="cls-1" d="M11,24a1,1,0,0,1-1-1V13a1,1,0,0,1,2,0V23A1,1,0,0,1,11,24Z"/></g>
+                        </svg>
+                      </button>
+                    </remove-cart-button>
+                  </div>
+                </div>
+              </li>
+            {% endfor %}
+          </ul>
+        </div>
+      </div>
+      <button type="button" class="closeSidebtn" onclick="this.closest('cart-drawer').close()" data-drawer-close>
+        <svg id="Outlined" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg"><title/><g id="Fill"><polygon points="28.71 4.71 27.29 3.29 16 14.59 4.71 3.29 3.29 4.71 14.59 16 3.29 27.29 4.71 28.71 16 17.41 27.29 28.71 28.71 27.29 17.41 16 28.71 4.71"/></g>
+        </svg>
+      </button>
+
+    </form>
+    <div class="cartItemsBox" style="min-height: auto !important;max-height: auto !important;">
+      <ul>
+        <h2 style="text-align: center;">You may also like</h2>
+        {% assign myVariant = '' %}
+        {%- comment -%}
+          <code>{{ rec_product.id }}</code>
+        {%- endcomment -%}
+        <form method="post" action="/cart/add" accept-charset="UTF-8" class="shopify-product-form" enctype="multipart/form-data">
+          <li>
+            <input type="hidden" name="form_type" value="product">
+            <select id="product-select-{{ rec_product.id }}" name="id" style="display: none;" data-variants>
+              
+              {% for v in rec_product.variants %}
+                {{ forloop.index | json }}
+                {% if forloop.index == 1 %}
+                  {% assign myVariant = v %}
+                {% endif %}
+                <option {% if v == variant %}selected="selected"{% endif %} value="{{ v.id }}" data-featured-image="{{ v.featured_media }}" data-image="{{ v.featured_media | product_img_url: '600x' }}" data-sku="{{ v.sku }}">{{ v.title }}</option>
+              {% endfor %}
+            </select>
+            <div class="productImgBlock">
+              <img src="{{ rec_product | img_url: '180x', scale: 2 }}" alt="{{ rec_product.title | escape }}">
+            </div>
+            <div class="productTitle">
+              <div class="productNameTxt">
+                <a href="{{ rec_product.url }}">
+                  {{ rec_product.title}}
+                </a>
+                <p class="cartPrice">{{ rec_product.price | money }}</p>
+                {% comment %} <div class="counterBox">
+                  <div class="purchase-details__quantity product-quantity-box">
+                    <span class="ss-icon product-minus js-change-quantity" data-func="minus">
+                      <span class="icon-minus"></span>
+                    </span>
+                    <input type="number" min="1" size="2" class="quantity" name="quantity" id="quantity" value="1" {% if settings.limit_quantity and variant.inventory_management != blank and variant.inventory_policy == "deny" %}max="{{ variant.inventory_quantity }}"{% endif %}/><span class="ss-icon product-plus js-change-quantity" data-func="plus">
+                      <span class="icon-plus"></span>
+                    </span>
+                  </div>
+                </div> {% endcomment %}
+                
+              </div> 
+              <div class="ctmCartbtn purchase-details__buttons purchase-details__spb--{{ show_payment_button }} {% if product.available == false %}product-is-unavailable{% endif %}">
+                {% if settings.cart_action == 'reload_page' %}
+                  <input type="hidden" name="return_to" value="back"/>
+                {% elsif settings.cart_action == 'redirect_checkout' %}
+                  <input type="hidden" name="return_to" value="{{ checkout_url }}"/>
+                {% endif %}
+
+                {% capture add_to_cart_label %}
+                  {% if collection_handles contains 'pre-order' %}
+                    {{ 'collections.general.pre_order' | t }}
+                  {% else %}
+                    {{ 'products.product.add_to_cart' | t }}{% endif %}
+                {% endcapture %}
+                {% if rec_product.available %}
+                <button type="submit" name="add" class="add_to_cart global-button" data-label={{ add_to_cart_label | json }}>
+                  <svg id="Capa_1" style="enable-background:new 0 0 59 59;" version="1.1" viewBox="0 0 59 59" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                    <g><path d="M59,41V15h-9c-0.553,0-1,0.447-1,1s0.447,1,1,1h7v22H11V17h7c0.553,0,1-0.447,1-1s-0.447-1-1-1h-7V7c0-0.553-0.447-1-1-1   H7.858C7.411,4.28,5.859,3,4,3C1.794,3,0,4.794,0,7s1.794,4,4,4c1.859,0,3.411-1.28,3.858-3H9v7v1v24v1v6c0,0.553,0.447,1,1,1   h7.031C15.806,48.912,15,50.359,15,52c0,2.757,2.243,5,5,5s5-2.243,5-5c0-1.641-0.806-3.088-2.031-4h18.062   C39.806,48.912,39,50.359,39,52c0,2.757,2.243,5,5,5s5-2.243,5-5c0-1.641-0.806-3.088-2.031-4H53c0.553,0,1-0.447,1-1s-0.447-1-1-1   H11v-5H59z M4,9C2.897,9,2,8.103,2,7s0.897-2,2-2c0.737,0,1.375,0.405,1.722,1H5C4.447,6,4,6.447,4,7s0.447,1,1,1h0.722   C5.375,8.595,4.737,9,4,9z M20,55c-1.654,0-3-1.346-3-3s1.346-3,3-3s3,1.346,3,3S21.654,55,20,55z M44,55c-1.654,0-3-1.346-3-3   s1.346-3,3-3s3,1.346,3,3S45.654,55,44,55z"/><path d="M34,30c7.72,0,14-6.28,14-14S41.72,2,34,2S20,8.28,20,16S26.28,30,34,30z M34,4c6.617,0,12,5.383,12,12s-5.383,12-12,12   s-12-5.383-12-12S27.383,4,34,4z"/><path d="M33,17v7c0,0.553,0.447,1,1,1s1-0.447,1-1v-7h7c0.553,0,1-0.447,1-1s-0.447-1-1-1h-7V8c0-0.553-0.447-1-1-1s-1,0.447-1,1v7   h-7c-0.553,0-1,0.447-1,1s0.447,1,1,1H33z"/></g><g/><g/><g/><g/><g/><g/><g/><g/><g/><g/><g/><g/><g/><g/><g/></svg>
+                </button>
+                {% else %}
+                  {{ settings.sold_out_text }}
+                {% endif %}
+              </div>
+              {% comment %}
+                <div class="productDelIcon">
+                <remove-cart-button data-index="{{ item.index | plus: 1  }}">
+                <button>
+                <?xml version="1.0" ?><svg height="50px" version="1.1" viewBox="0 0 20 20" width="50px" xmlns="http://www.w3.org/2000/svg" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns" xmlns:xlink="http://www.w3.org/1999/xlink"><title/><desc/><defs/><g fill="none" fill-rule="evenodd" id="Page-1" stroke="none" stroke-width="1"><g fill="#000000" id="Core" transform="translate(-212.000000, -422.000000)"><g id="shopping-cart" transform="translate(212.000000, 422.000000)"><path d="M6,16 C4.9,16 4,16.9 4,18 C4,19.1 4.9,20 6,20 C7.1,20 8,19.1 8,18 C8,16.9 7.1,16 6,16 L6,16 Z M0,0 L0,2 L2,2 L5.6,9.6 L4.2,12 C4.1,12.3 4,12.7 4,13 C4,14.1 4.9,15 6,15 L18,15 L18,13 L6.4,13 C6.3,13 6.2,12.9 6.2,12.8 L6.2,12.7 L7.1,11 L14.5,11 C15.3,11 15.9,10.6 16.2,10 L19.8,3.5 C20,3.3 20,3.2 20,3 C20,2.4 19.6,2 19,2 L4.2,2 L3.3,0 L0,0 L0,0 Z M16,16 C14.9,16 14,16.9 14,18 C14,19.1 14.9,20 16,20 C17.1,20 18,19.1 18,18 C18,16.9 17.1,16 16,16 L16,16 Z" id="Shape"/></g></g></g></svg>
+                </button>
+                </remove-cart-button>
+                </div>
+              {% endcomment %}
+            </div>
+          </li>
+        </form>
+      </ul>
+    </div>
+    <div class="cartCheckoutBtn">
+      <div class="totalPriceTxt">
+        <p>Total Price</p>
+        <h5 data-cart-total-price>{{ cart.total_price | money_with_currency }}</h5>
+      </div>
+      <button type="submit" form="CartDrawer-Form" name="checkout">Checkout</button>
+    </div>
+  </div>
+
+
+
+</cart-drawer>
+
+<script defer src="{{ 'cart-drawer.js' | asset_url }}"></script>
