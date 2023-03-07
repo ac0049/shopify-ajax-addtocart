@@ -38,3 +38,37 @@ document.addEventListener('DOMContentLoaded', function (){
   });
 }, false);
 ```
+
+## Shopify form serialize using javascript
+```
+// see cart-drawer.js
+let addToCartForm = e.srcElement;
+        let addToCartBtn = e.srcElement.querySelector('.add_to_cart');
+        if(!addToCartForm.classList.contains('shopify-product-form')){
+            return ;
+        }
+        e.preventDefault();
+
+    
+        let formObj = this.serializeForm(addToCartForm);
+        
+
+        let body = {
+            ...this.serializeForm(addToCartForm),
+            sections:[
+                'cart-drawer'
+            ],
+            sections_url: window.location.pathname
+        };
+
+        const itemProps = {};
+  
+        for (const key in body) {
+          if(key.includes('properties')) {
+            const propsName = key.replace('properties[', '').replace(']', '');
+            itemProps[propsName] = body[key];
+          }
+        }
+
+        body.properties = itemProps;
+```
