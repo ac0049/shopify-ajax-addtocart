@@ -112,16 +112,30 @@ class CartDrawer extends HTMLElement {
         }
         e.preventDefault();
 
+    
         let formObj = this.serializeForm(addToCartForm);
         
 
-        const body = JSON.stringify({
+        let body = {
             ...this.serializeForm(addToCartForm),
             sections:[
                 'cart-drawer'
             ],
             sections_url: window.location.pathname
-        });
+        };
+
+        const itemProps = {};
+  
+        for (const key in body) {
+          if(key.includes('properties')) {
+            const propsName = key.replace('properties[', '').replace(']', '');
+            itemProps[propsName] = body[key];
+          }
+        }
+
+        body.properties = itemProps;
+
+        body = JSON.stringify(body);
 
         addToCartBtn.setAttribute('disabled', 'disabled');
 
